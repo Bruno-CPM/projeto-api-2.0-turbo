@@ -1,163 +1,91 @@
-[README (1).md](https://github.com/user-attachments/files/25503482/README.1.md)
-# Cadastro API - Spring Boot
+# Projeto Cadastro API (Spring Boot + Next.js)
 
-API RESTful para gerenciamento de usuários desenvolvida com Java e
-Spring Boot, utilizando Spring Data JPA e MySQL para persistência de
-dados.
+API RESTful para gerenciamento de clínicas (médicos, pacientes e consultas) escrita em Java + Spring Boot, com frontend em Next.js.
 
-------------------------------------------------------------------------
+Principais tecnologias
+- Java 17+
+- Spring Boot
+- Spring Security (JWT)
+- Spring Data JPA / Hibernate
+- MySQL
+- Maven
+- Next.js (frontend)
 
-## Tecnologias
+Visão geral
+- Backend: `/projeto` (Spring Boot) — executa em `http://localhost:8080` por padrão.
+- Frontend: `/frontend` (Next.js) — executa em `http://localhost:3000` por padrão e faz proxy para a API via `/api`.
 
--   Java 17+
--   Spring Boot
--   Spring Data JPA
--   Hibernate
--   MySQL
--   Maven
--   Postman (testes)
+Pré-requisitos
+- Java 17+
+- Node.js 18+
+- MySQL em execução
 
-------------------------------------------------------------------------
+Configuração rápida
+1. Banco de dados (MySQL): criar banco e ajustar `projeto/src/main/resources/application.properties`.
 
-## Estrutura do Projeto
-
-    src/main/java
-     └── br.com.criandoAPI.projeto
-          ├── controllers
-          ├── DAO
-          ├── models
-          └── ProjetoApplication
-
-Arquitetura em camadas:
-
-Controller → Repository (DAO) → Model → Database
-
-------------------------------------------------------------------------
-
-## Pré-requisitos
-
--   Java 17 instalado
--   MySQL rodando
--   Maven instalado 
-
-Verificar versão do Java:
-
-    java -version
-
-------------------------------------------------------------------------
-
-## Configuração do Banco de Dados
-
-Criar o banco no MySQL:
-
-``` sql
-CREATE DATABASE cadastro_api;
+Exemplo mínimo (application.properties):
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/banco_de_usuarios?useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=senha
+spring.jpa.hibernate.ddl-auto=update
 ```
 
-Configurar o arquivo `application.properties`:
+Credencial inicial
+- Usuário padrão criado por `DadosIniciais`: `admin` / `123456`.
 
-    spring.datasource.url=jdbc:mysql://localhost:3306/cadastro_api?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
-    spring.datasource.username=root
-    spring.datasource.password=sua_senha
+Executando o backend
+```
+cd projeto
+./mvnw spring-boot:run
+```
 
-    spring.jpa.hibernate.ddl-auto=update
-    spring.jpa.show-sql=true
-    spring.jpa.properties.hibernate.format_sql=true
+Executando o frontend (desenvolvimento)
+```
+cd frontend
+npm install
+npm run dev
+```
 
-------------------------------------------------------------------------
+API — autenticação e uso
+- Login (gera JWT): `POST /auth/login` com body `{ "login":"admin", "senha":"123456" }`. Retorna `{ "token": "..." }`.
+- Use o token nas requisições protegidas no header: `Authorization: Bearer <token>`.
 
-## Executando o Projeto
+Endpoints principais (exemplos)
+- `POST /medicos` — cadastrar médico (requer autenticação)
+- `GET /medicos` — listar médicos
+- `POST /Pacientes` — cadastrar paciente (atenção: rota mapeada como `/Pacientes` no backend)
 
-### Usando Maven Wrapper
-
-Linux / Mac:
-
-    ./mvnw spring-boot:run
-
-Windows:
-
-    mvnw.cmd spring-boot:run
-
-------------------------------------------------------------------------
-
-### Usando Maven instalado
-
-    mvn clean install
-    mvn spring-boot:run
-
-------------------------------------------------------------------------
-
-## Compilar o Projeto
-
-    mvn clean package
-
-O arquivo `.jar` será gerado na pasta:
-
-    target/
-
-Executar o jar:
-
-    java -jar target/nome-do-arquivo.jar
-
-------------------------------------------------------------------------
-
-## Endpoints Disponíveis
-
-Base URL:
-
-    http://localhost:8080
-
-### Listar usuários
-
-    GET /usuarios
-
-### Criar usuário
-
-    POST /usuarios
-
-Body JSON:
-
-``` json
+Formato esperado para cadastro de médico
+```
 {
-  "nome": "Alex",
-  "email": "alex@gmail.com",
-  "senha": "123456",
-  "telefone": "999999999"
+  "nome": "Rodrigo Ferreira",
+  "email": "rodrigo.ferreira@api.med",
+  "crm": "123456",
+  "especialidade": "dermatologia"
 }
 ```
 
-### Atualizar usuário
+Validações importantes
+- `DadosCadastroMedico` valida: `nome` (não vazio), `email` (formato), `crm` (4–6 dígitos) e `especialidade` (enum). O enum `Especialidade` aceita valores case-insensitive (ex.: `dermatologia`).
 
-    PUT /usuarios
+CORS
+- Backend: `SecurityConfig` permite origens `http://localhost:3000` e `http://localhost:8080`.
+- Nota: Postman ignora CORS; problemas no navegador são por origem diferente (frontend → backend).
 
-Body JSON:
+Testes com Postman
+1. `POST /auth/login` → copiar token.
+2. Em um POST para `/medicos`, adicionar header `Authorization: Bearer <token>` e `Content-Type: application/json`.
 
-``` json
-{
-  "id": 1,
-  "nome": "Alex Atualizado",
-  "email": "alex@gmail.com",
-  "senha": "123456",
-  "telefone": "999999999"
-}
-```
+Bulk import
+- Atualmente o endpoint aceita um único objeto por requisição. Posso adicionar um endpoint para receber um array se desejar carregar vários médicos de uma vez.
 
-### Deletar usuário
+Como contribuir
+- Faça fork, crie branch para a sua feature/fix e abra um pull request.
 
-    DELETE /usuarios/{id}
+Observações
+- O repositório já foi publicado em: https://github.com/Bruno-CPM/projeto-api-2.0-turbo.git
+- Existem arquivos de configuração do IDE (`.idea`) incluídos no commit; se quiser, posso adicionar um `.gitignore` e remover arquivos desnecessários do repositório.
 
-Exemplo:
-
-    DELETE /usuarios/1
-
-------------------------------------------------------------------------
-
-## Conceitos Aplicados
-
--   RESTful API
--   Injeção de dependência
--   JPA e Hibernate
--   Mapeamento objeto-relacional
--   CRUD completo
--   Integração frontend ↔ backend
--   Configuração de CORS
+Contato
+- Abra uma issue no repositório ou me diga o que mais quer que eu documente aqui.

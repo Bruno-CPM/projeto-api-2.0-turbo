@@ -118,26 +118,26 @@ export const api = {
 
   listarPacientes(page = 0, size = 10) {
     return request<Page<DadosListagemPaciente>>(
-      `/Paciented?page=${page}&size=${size}&sort=nome,asc`
+      `/Pacientes?page=${page}&size=${size}&sort=nome,asc`
     );
   },
 
   cadastrarPaciente(data: DadosCadastroPaciente) {
-    return request<DadosDetalhesPaciente>("/Paciented", {
+    return request<DadosDetalhesPaciente>("/Pacientes", {
       method: "POST",
       body: JSON.stringify(data),
     });
   },
 
   atualizarPaciente(data: DadosAtualizarPaciente) {
-    return request<DadosDetalhesPaciente>("/Paciented", {
+    return request<DadosDetalhesPaciente>("/Pacientes", {
       method: "PUT",
       body: JSON.stringify(data),
     });
   },
 
   excluirPaciente(id: number) {
-    return request<void>(`/Paciented/${id}`, { method: "DELETE" });
+    return request<void>(`/Pacientes/${id}`, { method: "DELETE" });
   },
 
   agendarConsulta(data: DadosAgendamentoConsulta) {
