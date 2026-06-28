@@ -51,11 +51,6 @@ export default function LoginPage() {
               painel administrativo.
             </p>
           </div>
-          <div className="rounded-2xl bg-white/10 p-5 text-sm text-brand-50">
-            <p className="font-semibold">Acesso padrão</p>
-            <p className="mt-2">Usuário: admin</p>
-            <p>Senha: 123456</p>
-          </div>
         </section>
 
         <section className="p-8 lg:p-10">

@@ -1,8 +1,6 @@
 package br.com.criandoAPI.projeto.Consulta.Validacoes;
 
-import br.com.criandoAPI.domain.ValidacaoException;
 import br.com.criandoAPI.projeto.Consulta.DadosAgendamentoConsulta;
-import br.com.criandoAPI.projeto.domain.medico.MedicoRepository;
 import br.com.criandoAPI.projeto.domain.paciente.PacienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

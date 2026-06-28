@@ -1,6 +1,6 @@
 package br.com.criandoAPI.projeto.Consulta;
 
-import br.com.criandoAPI.domain.ValidacaoException;
+import br.com.criandoAPI.projeto.Consulta.Validacoes.ValidacaoException;
 import br.com.criandoAPI.projeto.Consulta.Validacoes.ValidadorAgendamentoConsulta;
 import br.com.criandoAPI.projeto.domain.medico.Medico;
 import br.com.criandoAPI.projeto.domain.medico.MedicoRepository;

@@ -1,6 +1,6 @@
 package br.com.criandoAPI.projeto.infra.exception;
 
-import br.com.criandoAPI.domain.ValidacaoException;
+import br.com.criandoAPI.projeto.Consulta.Validacoes.ValidacaoException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
